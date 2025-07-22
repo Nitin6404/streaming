@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  nginx-rtmp:
+    build: .
+    ports:
+      - "1935:1935" # RTMP
+      - "8080:80" # HTTP HLS
+    volumes:
+      - ./hls:/var/www/hls # Optional: For saving HLS output
+    restart: always
