@@ -16,7 +16,7 @@ A Docker-based live streaming server using NGINX with RTMP module for streaming 
 
 1. Clone this repository (if not already cloned):
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/Nitin6404/streaming
    cd streaming
    ```
 
