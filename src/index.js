@@ -65,6 +65,7 @@ if (NODE_ENV === 'development') {
 app.get('/', (req, res) => res.send('Welcome to the streaming API'));
 app.use('/api/auth', require('./routes/auth/index'));
 app.use('/api/subject',require('./routes/subject/index'));
+app.use('/api/batch',require("./routes/batch/index"));
 
 //  404 Fallback
 app.use((req, res, next) => {

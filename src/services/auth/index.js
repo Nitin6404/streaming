@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 /**
  * Registration handler — registers new user or logs in existing one
  */
-exports.registerUser = async (phoneNumber, otp, username) => {
+exports.registerUser = async (phoneNumber, otp, role,username) => {
   const isOtpValid = otp == OTP;
   if (!isOtpValid) {
     return {
@@ -26,7 +26,7 @@ exports.registerUser = async (phoneNumber, otp, username) => {
       };
     }
 
-    user = await createUser(phoneNumber, username);
+    user = await createUser(phoneNumber, username,role);
     if (!user) {
       return {
         statusCode: 500,

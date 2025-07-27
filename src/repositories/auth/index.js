@@ -1,15 +1,19 @@
-const { User } = require('../../models/userModel/index');
+const { User } = require("../../models/userModel/index");
 
 exports.checkUserExists = async (phoneNumber) => {
   return await User.findOne({ phoneNumber });
 };
 
-exports.createUser = async (phoneNumber, username) => {
+exports.createUser = async (phoneNumber, username, role) => {
   try {
-    const user = new User({ phoneNumber, username });
+    let userData = { phoneNumber, username };
+    if (role && role !== "student") {
+      userData.role = role;
+    }
+    const user = new User(userData);
     return await user.save();
   } catch (err) {
-    console.error('Create user error:', err);
+    console.error("Create user error:", err);
     return null;
   }
 };

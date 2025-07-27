@@ -21,3 +21,33 @@ exports.checkSubjectExists = async (subjectName,code) => {
     return null;
   }
 };
+
+// repositories/subject.js
+
+exports.updateSubject = async (updatedSubject, findSubjectName) => {
+  try {
+    const updateFields = {};
+
+    if (updatedSubject.subjectName) updateFields.subjectName = updatedSubject.subjectName;
+    if (updatedSubject.code) updateFields.code = updatedSubject.code;
+
+    return await Subject.findOneAndUpdate(
+      { subjectName: findSubjectName },
+      updateFields,
+      { new: true }
+    );
+  } catch (error) {
+    console.error("Updating Subject Error:", error);
+    return null;
+  }
+};
+
+exports.deleteSubject= async(subjectName,code) =>{
+  try {
+    return await Subject.findOneAndDelete({subjectName,code});
+    
+  } catch (error) {
+    console.error(error);
+    return null;        
+  }
+}

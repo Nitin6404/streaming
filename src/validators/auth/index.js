@@ -19,4 +19,8 @@ exports.validateMobileAndOTP = [
     .withMessage('Username must be a string')
     .isLength({ min: 3 })
     .withMessage('Username must be at least 3 characters long'),
+    
+  body("role").optional() 
+    .isString()
+    .withMessage('Role must be a string')
 ];
