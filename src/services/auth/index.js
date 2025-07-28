@@ -26,6 +26,16 @@ exports.registerUser = async (phoneNumber, otp, role,username) => {
       };
     }
 
+    if(user){
+      if(phoneNumber==user.phoneNumber){
+        return {
+          statusCode: 409,
+        message: 'id already exists',
+        data: null,
+        }
+      }
+    }
+
     user = await createUser(phoneNumber, username,role);
     if (!user) {
       return {

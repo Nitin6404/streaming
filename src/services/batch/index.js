@@ -1,6 +1,6 @@
-const { checkExistingBatch, createBatch } = require("../../repositories/batch")
+const { checkExistingBatch, createBatch, updateBatch, deleteBatch } = require("../../repositories/batch")
 
-exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{
+exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{    
     if(!batchName||!instructorIds||!subjectIds){
         return {
             statusCode:400,
@@ -34,4 +34,68 @@ exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{
         message:"Batch Created",
         data:batch
     }
+}
+
+exports.BatchUpdation = async (batchName,updatedBatch) =>{
+    
+    
+    if(!batchName || !updatedBatch){
+        return {
+            statusCode:400,
+            message:"Batch Name or updatedBatch is missing",
+            data:null
+        }
+    }
+
+    let batch = await checkExistingBatch(batchName);
+
+    if(!batch){
+        return {
+            statusCode:404,
+            message:"No batches exists from that name",
+            data:null
+        }
+    }
+
+    batch = await updateBatch(batchName,updatedBatch);
+
+    if(!batch){
+        return {
+            statusCode:500,
+            message:"Internal server Error",
+            data:null
+        }
+    }
+
+    return {
+        statusCode:200,
+        message:"Batch updated!",
+        data:batch
+    }
+}
+
+exports.BatchDeletion = async (batchName) =>{
+    if(!batchName){
+        return {
+            statusCode:404,
+            message:"No batches exists from that name",
+            data:null
+        }
+    }
+
+    let batch = await deleteBatch(batchName);
+    if(!batch){
+        return {
+            statusCode:404,
+            message:"Batch couldnt be deleted",
+            data:null
+        }
+    }
+
+    return {
+        statusCode:200,
+        message:"Batch deleted",
+        data:batch
+    }
+
 }
