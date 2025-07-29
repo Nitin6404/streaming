@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    restart: always
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/your-db
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+
+  streaming:
+    build:
+      context: ./streaming
+    container_name: streaming
+    ports:
+      - "1935:1935" # RTMP
+      - "8080:80" # HLS HTTP
+    volumes:
+      - ./streaming/hls:/var/www/hls
+    restart: always
+
+volumes:
+  mongo-data:
