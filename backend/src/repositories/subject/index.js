@@ -42,6 +42,10 @@ exports.updateSubject = async (updatedSubject, findSubjectName) => {
   }
 };
 
+exports.subject = async (subjectName) =>{
+  return await Subject.find()
+}
+
 exports.deleteSubject= async(subjectName,code) =>{
   try {
     return await Subject.findOneAndDelete({subjectName,code});
