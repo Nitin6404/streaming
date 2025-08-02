@@ -105,7 +105,7 @@ exports.StreamRead = async (streamName, batchId) => {
 
   return {
     statusCode: 200,
-    message: "Stream(s) Found",
+    message: "Streams Found",
     data: stream,
   };
 };
