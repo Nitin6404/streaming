@@ -4,6 +4,10 @@ exports.checkExistingBatch = async (batchName) => {
   return await Batch.findOne({ batchName });
 };
 
+exports.readAllBatch = async () =>{
+  return await Batch.find();
+}
+
 exports.createBatch = async (
   batchName,
   subjectIds,
@@ -51,3 +55,4 @@ exports.addStudentToBatch = async (studentId, batchName) => {
     return null;
   }
 };
+

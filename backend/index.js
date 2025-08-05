@@ -75,11 +75,13 @@ app.get("/", (req, res) => res.send("Welcome to the streaming API"));
 app.use("/api/auth", require("./src/routes/auth/index"));
 app.use("/api/subject", require("./src/routes/subject/index"));
 app.use("/api/batch", require("./src/routes/batch/index"));
+app.use("/api/stream",require("./src/routes/stream/index"));
+app.use("/api/notes",require("./src/routes/note/index"));
 
 //  404 Fallback
 app.use((req, res, next) => {
   return res
-    .status(200)
+    .status(404)
     .json(
       new ApiResponse(404, null, `Route ${req.originalUrl} not found`, null)
     );
