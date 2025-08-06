@@ -4,6 +4,10 @@ exports.checkUserExists = async (phoneNumber) => {
   return await User.findOne({ phoneNumber });
 };
 
+exports.checkUserUsernameExists = async (username)=>{
+  return await User.findOne({username:username});
+}
+
 exports.createUser = async (phoneNumber, username, role) => {
   try {
     let userData = { phoneNumber, username };

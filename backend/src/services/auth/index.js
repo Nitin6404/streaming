@@ -1,6 +1,7 @@
-const { checkUserExists, createUser } = require('../../repositories/auth');
+const { checkUserExists, createUser, checkUserUsernameExists } = require('../../repositories/auth');
 const { OTP } = require('../../constants/otp/index');
 const jwt = require('jsonwebtoken');
+const e = require('express');
 
 /**
  * Registration handler — registers new user or logs in existing one
@@ -17,24 +18,27 @@ exports.registerUser = async (phoneNumber, otp, role,username) => {
 
   let user = await checkUserExists(phoneNumber);
 
-  if (!user) {
-    if (!username) {
+
+
+  if (user) {
       return {
         statusCode: 400,
-        message: 'Username is required for new users',
+        message: 'Mobile no is registered',
         data: null,
       };
     }
 
+    user= await checkUserUsernameExists(username);
+
     if(user){
-      if(phoneNumber==user.phoneNumber){
-        return {
-          statusCode: 409,
-        message: 'id already exists',
-        data: null,
-        }
+      return {
+        statusCode:409,
+        message:"Username is already taken ",
+        data:null
       }
     }
+
+      
 
     user = await createUser(phoneNumber, username,role);
     if (!user) {
@@ -44,21 +48,21 @@ exports.registerUser = async (phoneNumber, otp, role,username) => {
         data: null,
       };
     }
-  }
+    const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET);
+    
+    const statusCode = user.createdAt === user.updatedAt ? 201 : 200;
+    
+    return {
+      statusCode,
+      message: statusCode === 201 ? 'User registered successfully' : 'User logged in successfully',
+      data: {
+        user,
+        token,
+      }}
+}
 
-  const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET);
+  
 
-  const statusCode = user.createdAt === user.updatedAt ? 201 : 200;
-
-  return {
-    statusCode,
-    message: statusCode === 201 ? 'User registered successfully' : 'User logged in successfully',
-    data: {
-      user,
-      token,
-    },
-  };
-};
 
 /**
  * Login handler — only allows existing users to log in
