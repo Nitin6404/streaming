@@ -4,6 +4,7 @@ const subjectSchema = new mongoose.Schema({
     subjectName:{type:String,required:true},
     code:{type:String,required:true},
     streamSessions:{type:mongoose.Schema.Types.ObjectId,ref:"stream"},
+    teacherId:{type:mongoose.Schema.Types.ObjectId,ref:"user"}
 })
 
 const Subject = mongoose.model("subject",subjectSchema);

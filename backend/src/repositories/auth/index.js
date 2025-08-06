@@ -22,4 +22,12 @@ exports.getAllUser = async () =>{
   return await User.find();
 }
 
+exports.checkTeacherExists = async (teacherId) =>{
+  const user = await User.findById(teacherId);
+  if(user.role!=="student"){
+      return true;
+  }
+  return false;
+}
+
 

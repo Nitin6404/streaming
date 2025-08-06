@@ -3,9 +3,9 @@ const ApiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 
 exports.handleBatchCreation = asyncHandler(async(req,res)=>{
-    const {batchName,instructorIds,subjectIds} = req.body;
+    const {teacherId,batchName,instructorIds,subjectIds} = req.body;
 
-    const result = await BatchCreation(batchName,instructorIds,subjectIds);
+    const result = await BatchCreation(teacherId,batchName,instructorIds,subjectIds);
 
     const {message,data,statusCode = 200} = result;
 
@@ -13,9 +13,9 @@ exports.handleBatchCreation = asyncHandler(async(req,res)=>{
 })
 
 exports.handleBatchUpdation = asyncHandler(async(req,res)=>{
-    const {batchName,updatedBatch} = req.body;    
+    const {teacherId,batchName,updatedBatch} = req.body;    
 
-    const result = await BatchUpdation(batchName,updatedBatch);
+    const result = await BatchUpdation(teacherId,batchName,updatedBatch);
 
    const {message,data,statusCode = 200} = result;
 
@@ -23,9 +23,9 @@ exports.handleBatchUpdation = asyncHandler(async(req,res)=>{
 })
 
 exports.handleBatchDeletion = asyncHandler(async(req,res)=>{
-    const {batchName} = req.body;
+    const {teacherId,batchName} = req.body;
 
-    const result = await BatchDeletion(batchName);
+    const result = await BatchDeletion(teacherId,batchName);
 
     const {message,data,statusCode = 200} = result;
 

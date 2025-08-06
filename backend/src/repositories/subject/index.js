@@ -2,9 +2,9 @@ const { Subject } = require("../../models/subjectModel");
 
 // repo
 
-exports.createSubject = async (subjectName, code) => {
+exports.createSubject = async (teacherId,subjectName, code) => {
   try {
-    const subject = Subject({ subjectName, code });
+    const subject = Subject({teacherId, subjectName, code });
 
     return await subject.save();
   } catch (err) {
@@ -12,6 +12,8 @@ exports.createSubject = async (subjectName, code) => {
     return null;
   }
 };
+
+
 
 exports.checkSubjectExists = async (subjectName,code) => {
   try {

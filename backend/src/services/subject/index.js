@@ -1,3 +1,4 @@
+const { checkTeacherExists } = require("../../repositories/auth");
 const {
   checkSubjectExists,
   createSubject: createSubjectInDB,
@@ -5,7 +6,7 @@ const {
   deleteSubject,
 } = require("../../repositories/subject");
 
-exports.createSubject = async (subjectName, code) => {
+exports.createSubject = async (teacherId,subjectName, code) => {
   
   if (!subjectName) {
     return {
@@ -13,6 +14,16 @@ exports.createSubject = async (subjectName, code) => {
       message: "Subject name is required for new Subject",
       data: null,
     };
+  }
+
+  let checkTeacher = await checkTeacherExists(teacherId);
+
+  if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't create subject!",
+      statusCode:400
+    }
   }
 
   let subject = await checkSubjectExists(subjectName, code);
@@ -25,7 +36,9 @@ exports.createSubject = async (subjectName, code) => {
     };
   }
 
-  subject = await createSubjectInDB(subjectName, code);
+
+
+  subject = await createSubjectInDB(teacherId,subjectName, code);
 
   if (!subject) {
     return {
@@ -42,13 +55,23 @@ exports.createSubject = async (subjectName, code) => {
   };
 };
 
-exports.updateExistingSubject = async (subjectName, code, updatedSubject) => {
+exports.updateExistingSubject = async (teacherId,subjectName, code, updatedSubject) => {
   if (!subjectName) {
     return {
       statusCode: 400,
       message: "Subject name is required to update Subject",
       data: null,
     };
+  }
+
+  let checkTeacher = await checkTeacherExists(teacherId);
+
+  if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't update subject!",
+      statusCode:400
+    }
   }
 
   const subject = await checkSubjectExists(subjectName, code);
@@ -97,13 +120,23 @@ exports.updateExistingSubject = async (subjectName, code, updatedSubject) => {
   };
 };
 
-exports.deleteExistingSubject = async (subjectName, code) => {
+exports.deleteExistingSubject = async (teacherId,subjectName, code) => {
   if (!subjectName || !code) {
     return {
       statusCode: 404,
       message: "Subject Name or Subject Code is missing",
       data: null,
     };
+  }
+
+  let checkTeacher = await checkTeacherExists(teacherId);
+
+  if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't delete subject!",
+      statusCode:400
+    }
   }
 
   const subject = await checkSubjectExists(subjectName, code);

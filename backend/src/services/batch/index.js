@@ -1,6 +1,7 @@
+const { checkTeacherExists } = require("../../repositories/auth");
 const { checkExistingBatch, createBatch, updateBatch, deleteBatch } = require("../../repositories/batch")
 
-exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{    
+exports.BatchCreation = async (teacherId,batchName,instructorIds,subjectIds) =>{    
     if(!batchName||!instructorIds||!subjectIds){
         return {
             statusCode:400,
@@ -8,6 +9,16 @@ exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{
             data:null
         }
     }
+
+    let teacherId = await checkTeacherExists(teacherId);
+
+    if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't create Batch!",
+      statusCode:400
+    }
+  }
 
     let batch = await checkExistingBatch(batchName);
 
@@ -36,7 +47,7 @@ exports.BatchCreation = async (batchName,instructorIds,subjectIds) =>{
     }
 }
 
-exports.BatchUpdation = async (batchName,updatedBatch) =>{
+exports.BatchUpdation = async (teacherId,batchName,updatedBatch) =>{
     
     
     if(!batchName || !updatedBatch){
@@ -46,6 +57,15 @@ exports.BatchUpdation = async (batchName,updatedBatch) =>{
             data:null
         }
     }
+    let teacherId = await checkTeacherExists(teacherId);
+
+    if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't update Batch!",
+      statusCode:400
+    }
+  }
 
     let batch = await checkExistingBatch(batchName);
 
@@ -74,7 +94,7 @@ exports.BatchUpdation = async (batchName,updatedBatch) =>{
     }
 }
 
-exports.BatchDeletion = async (batchName) =>{
+exports.BatchDeletion = async (teacherId,batchName) =>{
     if(!batchName){
         return {
             statusCode:404,
@@ -82,6 +102,15 @@ exports.BatchDeletion = async (batchName) =>{
             data:null
         }
     }
+    let teacherId = await checkTeacherExists(teacherId);
+
+    if(checkTeacher==false){
+    return {
+      data:null,
+      message:"Student can't delete Batch!",
+      statusCode:400
+    }
+  }
 
     let batch = await deleteBatch(batchName);
     if(!batch){

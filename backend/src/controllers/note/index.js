@@ -3,9 +3,9 @@ const {asyncHandler} = require("../../utils/asyncHandler/index")
 const ApiResponse =require("../../utils/apiResponse");
 
 exports.handleNoteCreation = asyncHandler(async(req,res)=>{
-    const {notesTitle,notesUrl,subjectId,streamId,uploadedBy}=req.body;
+    const {teacherId,notesTitle,notesUrl,subjectId,streamId,uploadedBy}=req.body;
 
-    const result = await NoteCreation(notesTitle,notesUrl,subjectId,streamId,uploadedBy);
+    const result = await NoteCreation(teacherId,notesTitle,notesUrl,subjectId,streamId,uploadedBy);
 
     const {message,data,statusCode =200} = result;
 
@@ -13,9 +13,9 @@ exports.handleNoteCreation = asyncHandler(async(req,res)=>{
 })
 
 exports.handleNoteUpdation = asyncHandler(async(req,res)=>{
-    const {notesTitle,updatedNote} = req.body;
+    const {teacherId,notesTitle,updatedNote} = req.body;
 
-    const result = await NoteUpdation(notesTitle,updatedNote);
+    const result = await NoteUpdation(teacherId,notesTitle,updatedNote);
 
     const {message,data,statusCode=200} = result;
 
@@ -33,9 +33,9 @@ exports.handleNoteRead = asyncHandler(async(req,res)=>{
 })
 
 exports.handleNoteDeletion = asyncHandler(async(req,res)=>{
-    const {notesTitle} = req.body;
+    const {teacherId,notesTitle} = req.body;
 
-    const result = await NoteDeletion(notesTitle);
+    const result = await NoteDeletion(teacherId,notesTitle);
 
     const {data, message,statusCode = 200} = result;
 
