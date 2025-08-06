@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 
 exports.validateBatchCreationAndEdititng = [
   body("batchName")
@@ -23,4 +23,10 @@ exports.validateBatchCreationAndEdititng = [
 exports.validateBatchUpdation = [
   body("batchName").notEmpty().withMessage("Batch name to update is required"),
   body("updatedBatch").isObject().withMessage("Updated batch data must be provided"),
+];
+exports.validateReadBatch = [
+  query("batchName")
+    .optional()
+    .isString()
+    .withMessage("batch name must be a string"),
 ];

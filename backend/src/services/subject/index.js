@@ -6,6 +6,7 @@ const {
 } = require("../../repositories/subject");
 
 exports.createSubject = async (subjectName, code) => {
+  
   if (!subjectName) {
     return {
       statusCode: 400,
@@ -131,3 +132,21 @@ exports.deleteExistingSubject = async (subjectName, code) => {
     data: null,
   };
 };
+
+exports.readExistingSubject = async (subjectName,code)=>{
+  const subject = await checkSubjectExists(subjectName,code);
+
+  if(!subject){
+    return {
+      data:null,
+      message:"Subject not found!",
+      statusCode:404
+    }
+  }
+
+  return {
+    data:subject,
+    message:"Subject founded!",
+    statusCode:200
+  }
+}

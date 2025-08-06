@@ -99,3 +99,21 @@ exports.BatchDeletion = async (batchName) =>{
     }
 
 }
+
+exports.BatchRead = async(batchName) =>{
+    const batch = await checkExistingBatch(batchName);
+
+    if(!batch){
+        return {
+            data:null,
+            message:"Batch not found!",
+            statusCode:404
+        }
+    }    
+
+    return {
+        data:batch,
+        message:"Batch founded",
+        statusCode:200
+    }
+}

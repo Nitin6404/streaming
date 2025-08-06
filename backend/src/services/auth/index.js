@@ -1,7 +1,6 @@
-const { checkUserExists, createUser, checkUserUsernameExists } = require('../../repositories/auth');
+const { checkUserExists, createUser, checkUserUsernameExists, getAllUser } = require('../../repositories/auth');
 const { OTP } = require('../../constants/otp/index');
 const jwt = require('jsonwebtoken');
-const e = require('express');
 
 /**
  * Registration handler — registers new user or logs in existing one
@@ -98,3 +97,42 @@ exports.loginUser = async (phoneNumber, otp) => {
     },
   };
 };
+
+
+exports.getUsers = async(phoneNumber) =>{
+  if(phoneNumber){
+    const user = await checkUserExists(phoneNumber);
+
+    if (!user) {
+    return {
+      statusCode: 404,
+      message: 'User not found.',
+      data: null,
+    };
+  }
+
+  
+    return {
+      statusCode: 200,
+      message: 'User founded!',
+      data: user,
+    };
+  }else{
+    const users = await getAllUser();
+
+    if(!users){
+      return {
+      statusCode: 404,
+      message: 'Users not found',
+      data: null,
+    }
+    }
+    return {
+      data:users,
+      message:"All Users searched",
+      statusCode:200
+    }
+  }
+
+
+}

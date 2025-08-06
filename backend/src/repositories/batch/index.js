@@ -1,7 +1,11 @@
 const { Batch } = require("../../models/batchModel");
 
 exports.checkExistingBatch = async (batchName) => {
-  return await Batch.findOne({ batchName });
+  if(batchName){
+    return await Batch.findOne({batchName});
+  }else{
+    return await Batch.find();
+  }
 };
 
 exports.readAllBatch = async () =>{

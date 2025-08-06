@@ -130,7 +130,7 @@ router.route("/stream-deletion").delete(
 
 /**
  * @swagger
- * /api/stream/stream-read/{batchId}:
+ * /api/stream/read-stream/{batchId}:
  *   get:
  *     summary: Get stream(s) by batchId, optionally filter by streamName
  *     tags: [Stream]
@@ -152,10 +152,12 @@ router.route("/stream-deletion").delete(
  *         description: Stream(s) found successfully
  */
 
-router.route("/stream-read/:batchId").get(
+router.route("/read-stream/:batchId").get(
   validateStreamRead,
   validateRequest,
   handleStreamRead
 );
+
+
 
 module.exports = router;

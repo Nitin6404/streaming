@@ -1,6 +1,6 @@
 const express = require("express");
-const { handleBatchCreation, handleBatchUpdation, handleBatchDeletion } = require("../../controllers/batch");
-const { validateBatchCreationAndEdititng, validateBatchUpdation } = require("../../validators/batch");
+const { handleBatchCreation, handleBatchUpdation, handleBatchDeletion, handleBatchRead } = require("../../controllers/batch");
+const { validateBatchCreationAndEdititng, validateBatchUpdation, validateReadBatch } = require("../../validators/batch");
 const { validateRequest } = require("../../middleware/validateRequest");
 const router = express.Router();
 
@@ -106,4 +106,24 @@ router.route("/update-batch").post(validateBatchUpdation,validateRequest,handleB
 
 router.route("/delete-batch").delete(validateRequest,handleBatchDeletion);
 
+/**
+ * @swagger
+ * /api/batch/read-batch:
+ *   get:
+ *     summary: Get batch information by batchName (optional)
+ *     tags: [Batch]
+ *     parameters:
+ *       - in: query
+ *         name: batchName
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Name of the batch to retrieve
+ *     responses:
+ *       200:
+ *         description: Batch data retrieved successfully
+ *       404:
+ *         description: Batch not found
+ */
+router.route("/read-batch").get(validateReadBatch,validateRequest,handleBatchRead);
 module.exports = router;

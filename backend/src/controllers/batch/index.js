@@ -1,4 +1,4 @@
-const { BatchCreation, BatchUpdation, BatchDeletion } = require("../../services/batch");
+const { BatchCreation, BatchUpdation, BatchDeletion, BatchRead } = require("../../services/batch");
 const ApiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 
@@ -31,3 +31,14 @@ exports.handleBatchDeletion = asyncHandler(async(req,res)=>{
 
     return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
 })
+
+exports.handleBatchRead = asyncHandler(async(req,res)=>{
+    const {batchName} = req.query;
+
+    const result = await BatchRead(batchName);
+    const {message,data,statusCode = 200} = result;
+
+    return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
+    
+})
+

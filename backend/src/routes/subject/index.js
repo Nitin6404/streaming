@@ -2,10 +2,11 @@ const express = require("express");
 const {
   handleSubjectCreation,
   handleUpdateSubject,
-  handleSubjectDeletion
+  handleSubjectDeletion,
+  handleSubjectRead
 } = require("../../controllers/subject");
 
-const { validateSubjectCreationAndEditing } = require("../../validators/subject");
+const { validateSubjectCreationAndEditing, validateReadSubject } = require("../../validators/subject");
 const { validateRequest } = require("../../middleware/validateRequest");
 
 const router = express.Router();
@@ -110,5 +111,30 @@ router
   .delete(validateRequest, handleSubjectDeletion);
 
 
+/**
+ * @swagger
+ * /api/subject/read-subject:
+ *   get:
+ *     summary: Read subject details by subjectName or code
+ *     tags: [Subject]
+ *     parameters:
+ *       - in: query
+ *         name: subjectName
+ *         schema:
+ *           type: string
+ *         description: Name of the subject (optional)
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: string
+ *         description: Code of the subject (optional)
+ *     responses:
+ *       200:
+ *         description: Subject found
+ *       404:
+ *         description: Subject not found
+ */
+
+router.route("/read-subject").get(validateReadSubject,validateRequest,handleSubjectRead);
 
 module.exports = router;

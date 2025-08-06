@@ -80,10 +80,10 @@ exports.NoteUpdation = async (notesTitle, updatedNote) => {
   };
 };
 exports.NoteRead = async (notesTitle, subjectId) => {
-  if (!notesTitle || !subjectId) {
+  if (!subjectId) {
     return {
       statusCode: 400,
-      message: "Note doesnt exist",
+      message: "Search parameters cant be empty",
       data: null,
     };
   }

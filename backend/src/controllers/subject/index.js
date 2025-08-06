@@ -1,4 +1,4 @@
-const { createSubject, deleteExistingSubject } = require("../../services/subject");
+const { createSubject, deleteExistingSubject, readExistingSubject } = require("../../services/subject");
 const ApiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 const { updateExistingSubject } = require("../../services/subject");
@@ -34,6 +34,16 @@ exports.handleSubjectDeletion = asyncHandler(async(req,res)=>{
     const result = await deleteExistingSubject(subjectName,code);
 
     const {message,statusCode=200,data} = result;
+
+    return res.status(statusCode).json(new ApiResponse(statusCode,data,message))
+})
+
+exports.handleSubjectRead = asyncHandler(async(req,res)=>{
+  const {subjectName,code}=req.query;
+
+  const result = await readExistingSubject(subjectName,code);
+
+  const {message,statusCode=200,data} = result;
 
     return res.status(statusCode).json(new ApiResponse(statusCode,data,message))
 })

@@ -1,7 +1,7 @@
 const { Note } = require("../../models/notesModel")
 
 exports.checkExistingNotes = async(notesTitle,notesUrl) =>{
-    return await findOne({notesUrl});
+     return await Note.findOne({$or:[{notesTitle},{notesUrl}]});
 
 }
 
@@ -15,7 +15,7 @@ exports.readNote = async (notesTitle,subjectId) =>{
     if(!notesTitle){
         return await Note.find({subjectId});
     }else{
-        return await Note.findOne({subjectId,notesTitle});
+        return await Note.find({$or:[{notesTitle},{subjectId}]});
     }
 }
 

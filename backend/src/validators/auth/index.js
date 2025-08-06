@@ -1,4 +1,5 @@
 const { body } = require('express-validator');
+const { query } = require('express-validator');
 
 exports.validateMobileAndOTP = [
   body('phoneNumber')
@@ -23,4 +24,12 @@ exports.validateMobileAndOTP = [
   body("role").optional() 
     .isString()
     .withMessage('Role must be a string')
+];
+exports.validateUserSearch = [
+  query('phoneNumber')
+    .optional()
+    .isNumeric()
+    .withMessage('Phone number must be a string')
+    .matches(/^\d{10}$/)
+    .withMessage('Phone number must be exactly 10 digits')
 ];
