@@ -35,6 +35,7 @@ const router = express.Router();
  *               - instructorId
  *               - streamUrl
  *               - batchId
+ *               - teacherId
  *             properties:
  *               streamName:
  *                 type: string
@@ -51,17 +52,19 @@ const router = express.Router();
  *               batchId:
  *                 type: string
  *                 example: "64f123abc123def456789abc"
-
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f123abc123def456789aaa"
  *     responses:
  *       200:
  *         description: Stream created successfully
  */
-
 router.route("/stream-creation").post(
   validateStreamCreation,
   validateRequest,
   handleStreamCreation
 );
+
 /**
  * @swagger
  * /api/stream/stream-updation:
@@ -77,11 +80,15 @@ router.route("/stream-creation").post(
  *             required:
  *               - streamName
  *               - updatedStream
+ *               - teacherId
  *             properties:
  *               streamName:
  *                 type: string
  *                 description: The name of the stream to be updated
  *                 example: "Physics-Live-Class"
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f123abc123def456789aaa"
  *               updatedStream:
  *                 type: object
  *                 description: Fields to update in the stream
@@ -93,7 +100,6 @@ router.route("/stream-creation").post(
  *       200:
  *         description: Stream updated successfully
  */
-
 router.route("/stream-updation").put(
   validateStreamUpdation,
   validateRequest,
@@ -114,10 +120,14 @@ router.route("/stream-updation").put(
  *             type: object
  *             required:
  *               - streamName
+ *               - teacherId
  *             properties:
  *               streamName:
  *                 type: string
  *                 example: "Physics-Live-Class"
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f123abc123def456789aaa"
  *     responses:
  *       200:
  *         description: Stream deleted successfully
@@ -151,13 +161,10 @@ router.route("/stream-deletion").delete(
  *       200:
  *         description: Stream(s) found successfully
  */
-
 router.route("/read-stream/:batchId").get(
   validateStreamRead,
   validateRequest,
   handleStreamRead
 );
-
-
 
 module.exports = router;

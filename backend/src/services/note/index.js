@@ -20,7 +20,7 @@ exports.NoteCreation = async (teacherId,
       data: null,
     };
   }
-  let teacherId = await checkTeacherExists(teacherId);
+  let checkTeacher = await checkTeacherExists(teacherId);
       
           if(checkTeacher==false){
           return {
@@ -70,7 +70,7 @@ exports.NoteUpdation = async (teacherId,notesTitle, updatedNote) => {
       message: "Note couldn't be updated",
       data: null,
     };
-  }let teacherId = await checkTeacherExists(teacherId);
+  }let checkTeacher = await checkTeacherExists(teacherId);
       
           if(checkTeacher==false){
           return {
@@ -131,7 +131,7 @@ exports.NoteDeletion = async (teacherId,notesTitle)=>{
     };
   }
 
-  let teacherId = await checkTeacherExists(teacherId);
+  let checkTeacher = await checkTeacherExists(teacherId);
       
           if(checkTeacher==false){
           return {

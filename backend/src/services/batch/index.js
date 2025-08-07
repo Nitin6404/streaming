@@ -10,7 +10,7 @@ exports.BatchCreation = async (teacherId,batchName,instructorIds,subjectIds) =>{
         }
     }
 
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
 
     if(checkTeacher==false){
     return {
@@ -57,7 +57,7 @@ exports.BatchUpdation = async (teacherId,batchName,updatedBatch) =>{
             data:null
         }
     }
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
 
     if(checkTeacher==false){
     return {
@@ -102,7 +102,7 @@ exports.BatchDeletion = async (teacherId,batchName) =>{
             data:null
         }
     }
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
 
     if(checkTeacher==false){
     return {

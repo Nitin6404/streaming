@@ -38,7 +38,7 @@ exports.createSubject = async (teacherId,subjectName, code) => {
 
 
 
-  subject = await createSubjectInDB(teacherId,subjectName, code);
+  subject = await createSubjectInDB(subjectName, code);
 
   if (!subject) {
     return {

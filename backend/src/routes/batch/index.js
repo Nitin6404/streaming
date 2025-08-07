@@ -1,7 +1,17 @@
 const express = require("express");
-const { handleBatchCreation, handleBatchUpdation, handleBatchDeletion, handleBatchRead } = require("../../controllers/batch");
-const { validateBatchCreationAndEdititng, validateBatchUpdation, validateReadBatch } = require("../../validators/batch");
+const {
+  handleBatchCreation,
+  handleBatchUpdation,
+  handleBatchDeletion,
+  handleBatchRead,
+} = require("../../controllers/batch");
+const {
+  validateBatchCreationAndEdititng,
+  validateBatchUpdation,
+  validateReadBatch,
+} = require("../../validators/batch");
 const { validateRequest } = require("../../middleware/validateRequest");
+
 const router = express.Router();
 
 /**
@@ -17,10 +27,14 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
+ *               - teacherId
  *               - batchName
  *               - subjectIds
  *               - instructorIds
  *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64c7654321abcde111111111"
  *               batchName:
  *                 type: string
  *                 example: "Batch A"
@@ -38,7 +52,6 @@ const router = express.Router();
  *       201:
  *         description: Batch created successfully
  */
-
 router
   .route("/create-batch")
   .post(validateBatchCreationAndEdititng, validateRequest, handleBatchCreation);
@@ -56,9 +69,13 @@ router
  *           schema:
  *             type: object
  *             required:
+ *               - teacherId
  *               - batchName
  *               - updatedBatch
  *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64c7654321abcde111111111"
  *               batchName:
  *                 type: string
  *                 example: "Batch A"
@@ -82,9 +99,9 @@ router
  *       200:
  *         description: Batch updated successfully
  */
-
-router.route("/update-batch").post(validateBatchUpdation,validateRequest,handleBatchUpdation);
-
+router
+  .route("/update-batch")
+  .put(validateBatchUpdation, validateRequest, handleBatchUpdation);
 
 /**
  * @swagger
@@ -92,19 +109,29 @@ router.route("/update-batch").post(validateBatchUpdation,validateRequest,handleB
  *   delete:
  *     summary: Delete a batch by name
  *     tags: [Batch]
- *     parameters:
- *       - in: query
- *         name: batchName
- *         required: true
- *         schema:
- *           type: string
- *         example: "Batch A"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - teacherId
+ *               - batchName
+ *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64c7654321abcde111111111"
+ *               batchName:
+ *                 type: string
+ *                 example: "Batch A"
  *     responses:
  *       200:
  *         description: Batch deleted successfully
  */
-
-router.route("/delete-batch").delete(validateRequest,handleBatchDeletion);
+router
+  .route("/delete-batch")
+  .delete(validateRequest, handleBatchDeletion);
 
 /**
  * @swagger
@@ -125,5 +152,8 @@ router.route("/delete-batch").delete(validateRequest,handleBatchDeletion);
  *       404:
  *         description: Batch not found
  */
-router.route("/read-batch").get(validateReadBatch,validateRequest,handleBatchRead);
+router
+  .route("/read-batch")
+  .get(validateReadBatch, validateRequest, handleBatchRead);
+
 module.exports = router;

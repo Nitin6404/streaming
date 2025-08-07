@@ -4,6 +4,11 @@ exports.validateBatchCreationAndEdititng = [
   body("batchName")
     .notEmpty()
     .withMessage("Batch name is required"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID"),
 
   body("subjectIds")
     .isArray({ min: 1 })

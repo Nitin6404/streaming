@@ -20,7 +20,12 @@ exports.validateStreamCreation = [
     .notEmpty()
     .withMessage("Instructor ID is required"),
 
-    body("batchId").notEmpty().withMessage("Batch is required")
+    body("batchId").notEmpty().withMessage("Batch is required"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 exports.validateStreamUpdation = [
@@ -32,12 +37,22 @@ exports.validateStreamUpdation = [
     .notEmpty()
     .isObject()
     .withMessage("Updated stream data must be provided and be an object"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 exports.validateStreamDeletion = [
   body("streamName")
     .notEmpty()
     .withMessage("Stream name is required for deletion"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 

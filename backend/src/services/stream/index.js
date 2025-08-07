@@ -10,7 +10,7 @@ exports.StreamCreation = async (teacherId,streamName,subjectId,streamUrl,instruc
         }
     }
 
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
     
         if(checkTeacher==false){
         return {
@@ -57,7 +57,7 @@ exports.StreamUpdate = async (teacherId,streamName,updatedStream) =>{
         }
     }
 
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
     
         if(checkTeacher==false){
         return {
@@ -94,7 +94,7 @@ exports.StreamDeletion = async (teacherId,streamName) =>{
             data:null
         }
     }
-    let teacherId = await checkTeacherExists(teacherId);
+    let checkTeacher = await checkTeacherExists(teacherId);
     
         if(checkTeacher==false){
         return {
