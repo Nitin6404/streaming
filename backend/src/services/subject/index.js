@@ -1,3 +1,4 @@
+//services/subject/index.js
 const { checkTeacherExists } = require("../../repositories/auth");
 const {
   checkSubjectExists,

@@ -1,6 +1,7 @@
 const { Subject } = require("../../models/subjectModel");
 
-// repo
+// repositories/subject.js
+
 
 exports.createSubject = async (subjectName, code) => {
   try {
@@ -29,7 +30,6 @@ exports.checkSubjectExists = async (subjectName,code) => {
   }
 };
 
-// repositories/subject.js
 
 exports.updateSubject = async (updatedSubject, findSubjectName) => {
   try {

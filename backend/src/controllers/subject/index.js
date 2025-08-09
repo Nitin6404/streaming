@@ -4,7 +4,7 @@ const { asyncHandler } = require("../../utils/asyncHandler");
 const { updateExistingSubject } = require("../../services/subject");
 
 
-// controller
+// controller/subject/index.js
 
 exports.handleSubjectCreation = asyncHandler(async(req,res)=>{
     const {subjectName,code,teacherId} = req.body;

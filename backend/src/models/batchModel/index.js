@@ -5,6 +5,7 @@ const batchSchema = new mongoose.Schema({
     subjectIds:{type:[mongoose.Schema.Types.ObjectId],ref:"subject",required:true},
     instructorIds:{type:[mongoose.Schema.Types.ObjectId],ref:"user",required:true},
     studentsIds:{type:[mongoose.Schema.Types.ObjectId],ref:"user",default:[]},
+    price: { type: Number, required: true },
 },{
     timestamps:true
 })
