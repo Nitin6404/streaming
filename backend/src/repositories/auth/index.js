@@ -1,7 +1,7 @@
 const { User } = require("../../models/userModel/index");
 
 exports.checkUserExists = async (phoneNumber) => {
-  return await User.findOne({ phoneNumber });
+  return await User.findOne({ phoneNumber });  
 };
 
 exports.createUser = async (phoneNumber, username, role) => {
@@ -17,5 +17,17 @@ exports.createUser = async (phoneNumber, username, role) => {
     return null;
   }
 };
+
+exports.getAllUser = async () =>{
+  return await User.find();
+}
+
+exports.checkTeacherExists = async (teacherId) =>{
+  const user = await User.findById(teacherId);
+  if(user.role!=="student"){
+      return true;
+  }
+  return false;
+}
 
 

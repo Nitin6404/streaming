@@ -6,20 +6,29 @@ const {
   deleteNote,
 } = require("../../repositories/note");
 
-exports.NoteCreation = async (
+exports.NoteCreation = async (teacherId,
   notesTitle,
   notesUrl,
   subjectId,
   streamId,
   uploadedBy
 ) => {
-  if (!notesTitle || !notesUrl || !subjectId || !streamId || !uploadedBy) {
+  if (!notesTitle || !notesUrl || !subjectId||!teacherId || !streamId || !uploadedBy) {
     return {
       statusCode: 400,
       message: "Note couldn't be created",
       data: null,
     };
   }
+  let checkTeacher = await checkTeacherExists(teacherId);
+      
+          if(checkTeacher==false){
+          return {
+            data:null,
+            message:"Student can't create notes!",
+            statusCode:400
+          }
+        }
 
   let note = await checkExistingNotes(notesTitle, notesUrl);
 
@@ -54,14 +63,22 @@ exports.NoteCreation = async (
   };
 };
 
-exports.NoteUpdation = async (notesTitle, updatedNote) => {
-  if (!notesTitle || !updatedNote) {
+exports.NoteUpdation = async (teacherId,notesTitle, updatedNote) => {
+  if (!notesTitle ||!teacherId|| !updatedNote) {
     return {
       statusCode: 400,
       message: "Note couldn't be updated",
       data: null,
     };
-  }
+  }let checkTeacher = await checkTeacherExists(teacherId);
+      
+          if(checkTeacher==false){
+          return {
+            data:null,
+            message:"Student can't update notes!",
+            statusCode:400
+          }
+        }
 
   let note = await updateNote(notesTitle, updatedNote);
 
@@ -80,10 +97,10 @@ exports.NoteUpdation = async (notesTitle, updatedNote) => {
   };
 };
 exports.NoteRead = async (notesTitle, subjectId) => {
-  if (!notesTitle || !subjectId) {
+  if (!subjectId) {
     return {
       statusCode: 400,
-      message: "Note doesnt exist",
+      message: "Search parameters cant be empty",
       data: null,
     };
   }
@@ -105,14 +122,24 @@ exports.NoteRead = async (notesTitle, subjectId) => {
   }
 };
 
-exports.NoteDeletion = async (notesTitle)=>{
-  if (!notesTitle ) {
+exports.NoteDeletion = async (teacherId,notesTitle)=>{
+  if (!notesTitle||!teacherId ) {
     return {
       statusCode: 400,
       message: "Note doesnt exist",
       data: null,
     };
   }
+
+  let checkTeacher = await checkTeacherExists(teacherId);
+      
+          if(checkTeacher==false){
+          return {
+            data:null,
+            message:"Student can't delete notes!",
+            statusCode:400
+          }
+        }
   let note = await deleteNote(notesTitle);
 
   return {

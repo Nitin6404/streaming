@@ -1,4 +1,5 @@
-const { registerUser, loginUser } = require('../../services/auth/index');
+const { checkUserExists } = require('../../repositories/auth');
+const { registerUser, loginUser, getUsers, getUser } = require('../../services/auth/index');
 const ApiResponse = require('../../utils/apiResponse');
 const { asyncHandler } = require('../../utils/asyncHandler/index');
 
@@ -21,3 +22,14 @@ exports.handleUserLogin = asyncHandler(async(req,res)=>{
 
   return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
 })
+
+exports.handleAllUserSearch = asyncHandler(async(req,res)=>{
+
+   const phoneNumber = req.query.id;
+
+    const result = await getUsers(phoneNumber);
+
+    const {message,data,statusCode} = result;
+
+    return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
+  })

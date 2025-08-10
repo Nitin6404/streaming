@@ -2,10 +2,11 @@ const express = require("express");
 const {
   handleSubjectCreation,
   handleUpdateSubject,
-  handleSubjectDeletion
+  handleSubjectDeletion,
+  handleSubjectRead
 } = require("../../controllers/subject");
 
-const { validateSubjectCreationAndEditing } = require("../../validators/subject");
+const { validateSubjectCreationAndEditing, validateReadSubject } = require("../../validators/subject");
 const { validateRequest } = require("../../middleware/validateRequest");
 
 const router = express.Router();
@@ -33,6 +34,9 @@ const router = express.Router();
  *                 type: array
  *                 items:
  *                   type: string
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f3ac98b7620c001f0c2222"
  *     responses:
  *       201:
  *         description: Subject created successfully
@@ -61,6 +65,9 @@ router
  *               code:
  *                 type: string
  *                 example: "MATH101"
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f3ac98b7620c001f0c2222"
  *               updatedSubject:
  *                 type: object
  *                 properties:
@@ -70,6 +77,9 @@ router
  *                   code:
  *                     type: string
  *                     example: "MATH102"
+ *                   teacherId:
+ *                     type: string
+ *                     example: "64f3ac98b7620c001f0c3333"
  *     responses:
  *       200:
  *         description: Subject updated successfully
@@ -77,7 +87,6 @@ router
 router
   .route("/update-subject")
   .put(validateSubjectCreationAndEditing, validateRequest, handleUpdateSubject);
-
 
 
 /**
@@ -99,6 +108,9 @@ router
  *               code:
  *                 type: string
  *                 example: "MATH101"
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f3ac98b7620c001f0c2222"
  *     responses:
  *       200:
  *         description: Subject deleted successfully
@@ -110,5 +122,31 @@ router
   .delete(validateRequest, handleSubjectDeletion);
 
 
+/**
+ * @swagger
+ * /api/subject/read-subject:
+ *   get:
+ *     summary: Read subject details by subjectName or code
+ *     tags: [Subject]
+ *     parameters:
+ *       - in: query
+ *         name: subjectName
+ *         schema:
+ *           type: string
+ *         description: Name of the subject (optional)
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: string
+ *         description: Code of the subject (optional)
+ *     responses:
+ *       200:
+ *         description: Subject found
+ *       404:
+ *         description: Subject not found
+ */
+router
+  .route("/read-subject")
+  .get(validateReadSubject, validateRequest, handleSubjectRead);
 
 module.exports = router;

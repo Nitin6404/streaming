@@ -8,4 +8,24 @@ exports.validateSubjectCreationAndEditing = [
     .isLength({ min: 3, max: 10 })
     .withMessage("Subject Code must be 3 letter"),
   body("streamSessions"),
+  body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
+
+const { query } = require("express-validator");
+
+exports.validateReadSubject = [
+  query("subjectName")
+    .optional()
+    .isString()
+    .withMessage("Subject name must be a string"),
+
+  query("code")
+    .optional()
+    .isString()
+    .withMessage("Code must be a string"),
+];
+

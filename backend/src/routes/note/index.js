@@ -5,6 +5,7 @@ const {
   handleNoteDeletion,
   handleNoteRead
 } = require("../../controllers/note");
+
 const {
   validateNoteCreation,
   validateNoteUpdate,
@@ -36,12 +37,16 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
+ *               - teacherId
  *               - notesTitle
  *               - notesUrl
  *               - subjectId
  *               - streamId
  *               - uploadedBy
  *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f999abc000def456789aaa"
  *               notesTitle:
  *                 type: string
  *                 example: "Intro to Thermodynamics"
@@ -61,12 +66,13 @@ const router = express.Router();
  *       200:
  *         description: Note uploaded successfully
  */
-router.route("/create-note").post(validateNoteCreation,validateRequest,handleNoteCreation);
+router.route("/create-note").post(validateNoteCreation, validateRequest, handleNoteCreation);
+
 
 /**
  * @swagger
  * /api/notes/update-note:
- *   post:
+ *   put:
  *     summary: Update an existing note
  *     tags: [Notes]
  *     requestBody:
@@ -76,9 +82,13 @@ router.route("/create-note").post(validateNoteCreation,validateRequest,handleNot
  *           schema:
  *             type: object
  *             required:
+ *               - teacherId
  *               - notesTitle
  *               - updatedNote
  *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f999abc000def456789aaa"
  *               notesTitle:
  *                 type: string
  *                 example: "Intro to Thermodynamics"
@@ -96,7 +106,7 @@ router.route("/update-note").put(validateNoteUpdate, validateRequest, handleNote
 /**
  * @swagger
  * /api/notes/delete-note:
- *   post:
+ *   delete:
  *     summary: Delete a note by title
  *     tags: [Notes]
  *     requestBody:
@@ -106,8 +116,12 @@ router.route("/update-note").put(validateNoteUpdate, validateRequest, handleNote
  *           schema:
  *             type: object
  *             required:
+ *               - teacherId
  *               - notesTitle
  *             properties:
+ *               teacherId:
+ *                 type: string
+ *                 example: "64f999abc000def456789aaa"
  *               notesTitle:
  *                 type: string
  *                 example: "Intro to Thermodynamics"
@@ -117,10 +131,11 @@ router.route("/update-note").put(validateNoteUpdate, validateRequest, handleNote
  */
 router.route("/delete-note").delete(validateNoteDelete, validateRequest, handleNoteDeletion);
 
+
 /**
  * @swagger
  * /api/notes/read-note:
- *   post:
+ *   get:
  *     summary: Read a note by title or list all by subject
  *     tags: [Notes]
  *     requestBody:

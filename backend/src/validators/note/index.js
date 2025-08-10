@@ -15,7 +15,12 @@ exports.validateNoteCreation = [
     .isMongoId().withMessage("Invalid Stream ID"),
   body("uploadedBy")
     .notEmpty().withMessage("Uploader is required")
-    .isMongoId().withMessage("Invalid uploader ID")
+    .isMongoId().withMessage("Invalid uploader ID"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 exports.validateNoteUpdate = [
@@ -24,13 +29,23 @@ exports.validateNoteUpdate = [
     .isString().withMessage("Note title must be a string"),
   body("updatedNote")
     .notEmpty().withMessage("Updated note content is required")
-    .isObject().withMessage("Updated note must be an object")
+    .isObject().withMessage("Updated note must be an object"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 exports.validateNoteDelete = [
   body("notesTitle")
     .notEmpty().withMessage("Note title is required")
-    .isString().withMessage("Note title must be a string")
+    .isString().withMessage("Note title must be a string"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID")
 ];
 
 exports.validateNoteRead = [

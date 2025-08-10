@@ -1,6 +1,7 @@
+const { checkTeacherExists } = require("../../repositories/auth");
 const { checkExistingStream, createStream, updateStream, deleteStream, readAllStream } = require("../../repositories/stream")
 
-exports.StreamCreation = async (streamName,subjectId,streamUrl,instructorId,batchId) =>{
+exports.StreamCreation = async (teacherId,streamName,subjectId,streamUrl,instructorId,batchId) =>{
     if(!streamName||!subjectId||!instructorId||!batchId){
         return {
             statusCode : 400,
@@ -8,6 +9,16 @@ exports.StreamCreation = async (streamName,subjectId,streamUrl,instructorId,batc
             data :null
         }
     }
+
+    let checkTeacher = await checkTeacherExists(teacherId);
+    
+        if(checkTeacher==false){
+        return {
+          data:null,
+          message:"Student can't create stream!",
+          statusCode:400
+        }
+      }
 
     let stream = await checkExistingStream(streamName);
     
@@ -37,7 +48,7 @@ exports.StreamCreation = async (streamName,subjectId,streamUrl,instructorId,batc
     }
 }
 
-exports.StreamUpdate = async (streamName,updatedStream) =>{
+exports.StreamUpdate = async (teacherId,streamName,updatedStream) =>{
     if(!streamName ||!updatedStream){
         return {
             statusCode:400,
@@ -45,6 +56,16 @@ exports.StreamUpdate = async (streamName,updatedStream) =>{
             data:null
         }
     }
+
+    let checkTeacher = await checkTeacherExists(teacherId);
+    
+        if(checkTeacher==false){
+        return {
+          data:null,
+          message:"Student can't update stream!",
+          statusCode:400
+        }
+      }
 
     let stream = await updateStream(streamName,updatedStream);
 
@@ -65,7 +86,7 @@ exports.StreamUpdate = async (streamName,updatedStream) =>{
     }
 }
 
-exports.StreamDeletion = async (streamName) =>{
+exports.StreamDeletion = async (teacherId,streamName) =>{
     if(!streamName){
         return {
             statusCode:400,
@@ -73,6 +94,15 @@ exports.StreamDeletion = async (streamName) =>{
             data:null
         }
     }
+    let checkTeacher = await checkTeacherExists(teacherId);
+    
+        if(checkTeacher==false){
+        return {
+          data:null,
+          message:"Student can't delete stream!",
+          statusCode:400
+        }
+      }
 
     const stream = await deleteStream(streamName);
 

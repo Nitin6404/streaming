@@ -1,9 +1,14 @@
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 
 exports.validateBatchCreationAndEdititng = [
   body("batchName")
     .notEmpty()
     .withMessage("Batch name is required"),
+    body("teacherId")
+  .notEmpty()
+  .withMessage("Teacher ID is required")
+  .isMongoId()
+  .withMessage("Invalid Teacher ID"),
 
   body("subjectIds")
     .isArray({ min: 1 })
@@ -23,4 +28,10 @@ exports.validateBatchCreationAndEdititng = [
 exports.validateBatchUpdation = [
   body("batchName").notEmpty().withMessage("Batch name to update is required"),
   body("updatedBatch").isObject().withMessage("Updated batch data must be provided"),
+];
+exports.validateReadBatch = [
+  query("batchName")
+    .optional()
+    .isString()
+    .withMessage("batch name must be a string"),
 ];

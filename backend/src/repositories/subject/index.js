@@ -1,6 +1,7 @@
 const { Subject } = require("../../models/subjectModel");
 
-// repo
+// repositories/subject.js
+
 
 exports.createSubject = async (subjectName, code) => {
   try {
@@ -13,16 +14,22 @@ exports.createSubject = async (subjectName, code) => {
   }
 };
 
+
+
 exports.checkSubjectExists = async (subjectName,code) => {
   try {
-    return await Subject.findOne({ subjectName },{code});
+    if(subjectName&&code){
+      return await Subject.findOne({$or:[{subjectName},{code}]});
+    }else{
+      return await Subject.find();
+    }
+
   } catch (error) {
     console.error("finding subject error:", err);
     return null;
   }
 };
 
-// repositories/subject.js
 
 exports.updateSubject = async (updatedSubject, findSubjectName) => {
   try {
@@ -42,9 +49,6 @@ exports.updateSubject = async (updatedSubject, findSubjectName) => {
   }
 };
 
-exports.subject = async (subjectName) =>{
-  return await Subject.find()
-}
 
 exports.deleteSubject= async(subjectName,code) =>{
   try {

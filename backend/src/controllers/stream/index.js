@@ -3,9 +3,9 @@ const ApiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 
 exports.handleStreamCreation = asyncHandler(async (req,res) =>{
-    const {streamName,subjectId,streamUrl,instructorId,batchId} = req.body;
+    const {teacherId,streamName,subjectId,streamUrl,instructorId,batchId} = req.body;
 
-    const result = await StreamCreation(streamName,subjectId,streamUrl,instructorId,batchId);
+    const result = await StreamCreation(teacherId,streamName,subjectId,streamUrl,instructorId,batchId);
 
     const {message,statusCode =200,data} = result;
 
@@ -14,9 +14,9 @@ exports.handleStreamCreation = asyncHandler(async (req,res) =>{
 
 
 exports.handleStreamUpdation = asyncHandler(async(req,res)=>{
-    const {streamName,updatedStream} = req.body;
+    const {teacherId,streamName,updatedStream} = req.body;
 
-    const result = await StreamUpdate(streamName,updatedStream);
+    const result = await StreamUpdate(teacherId,streamName,updatedStream);
 
     const {message,statusCode=200,data} = result;
 
@@ -24,9 +24,9 @@ exports.handleStreamUpdation = asyncHandler(async(req,res)=>{
 })
 
 exports.handleStreamDeletion = asyncHandler(async(req,res)=>{
-    const {streamName} = req.body;
+    const {teacherId,streamName} = req.body;
 
-    const result = await StreamDeletion(streamName);
+    const result = await StreamDeletion(teacherId,streamName);
 
     const {message,statusCode=200,data}= result ;
 
