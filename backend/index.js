@@ -77,6 +77,8 @@ app.use("/api/subject", require("./src/routes/subject/index"));
 app.use("/api/batch", require("./src/routes/batch/index"));
 app.use("/api/stream",require("./src/routes/stream/index"));
 app.use("/api/notes",require("./src/routes/note/index"));
+app.use("/api/payment",require("./src/routes/payment/index"));
+app.use("/api/category",require("./src/routes/category/index"));
 
 //  404 Fallback
 app.use((req, res, next) => {

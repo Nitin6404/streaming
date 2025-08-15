@@ -2,7 +2,7 @@
 
 const {
   createOrder: createOrderService,
-  verifyAndSavePayment
+  verifyOrder
 } = require("../../services/payment");
 const ApiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
@@ -27,13 +27,13 @@ exports.handleVerifyPayment = asyncHandler(async (req, res) => {
     razorpaySignature
   } = req.body;
 
-  const result = await verifyAndSavePayment({
+  const result = await verifyOrder(
     userId,
     batchId,
     razorpayOrderId,
     razorpayPaymentId,
     razorpaySignature
-  });
+  );
 
   const { message, data, statusCode = 200 } = result;
 

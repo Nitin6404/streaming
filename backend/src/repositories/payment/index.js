@@ -36,13 +36,13 @@ exports.createOrder = async (userId, batchId, amount) => {
 };
 
 // Verify and Save Payment
-exports.verifyAndSavePayment = async ({
+exports.verifyAndSavePayment = async (
   userId,
   batchId,
   razorpayOrderId,
   razorpayPaymentId,
   razorpaySignature,
-}) => {
+) => {
   try {
     const isValid = verifySignature({
       orderId: razorpayOrderId,

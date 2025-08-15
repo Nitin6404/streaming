@@ -42,13 +42,13 @@ exports.verifyOrder = async (
     };
   }
 
-  const verifiedPayment = await verifyAndSavePayment({
+  const verifiedPayment = await verifyAndSavePayment(
     userId,
     batchId,
     razorpayOrderId,
     razorpayPaymentId,
     razorpaySignature,
-  });
+  );
 
   if (!verifiedPayment) {
     return {
