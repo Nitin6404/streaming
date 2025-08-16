@@ -106,64 +106,49 @@ const getSingleCategory = async id => {
 /**
  * Update category
  */
-const updateCategory = async (id, data, imageFile, userId) => {
+const updateCategory = async (id, data, userId) => {
   if (!id) {
-    return {
-      statusCode: 400,
-      message: 'Category id is required',
-      data: null,
-    };
+    return { statusCode: 400, message: 'Category id is required', data: null };
   }
-
   if (!userId) {
-    return {
-      statusCode: 400,
-      message: 'User id is required',
-      data: null,
-    };
+    return { statusCode: 400, message: 'User id is required', data: null };
   }
 
-  // Check if user is a teacher
   const isTeacher = await checkTeacherExists(userId);
   if (!isTeacher) {
-    return {
-      statusCode: 403,
-      message: "Student can't update category",
-      data: null,
-    };
+    return { statusCode: 403, message: "Student can't update category", data: null };
   }
 
   const category = await getCategoryById(id);
   if (!category) {
-    return {
-      statusCode: 404,
-      message: 'Category not found',
-      data: null,
-    };
+    return { statusCode: 404, message: 'Category not found', data: null };
   }
 
-  const categoryData = { ...data, updatedBy: userId };
+  const categoryData = {
+    name: data.name || category.name,
+    slug: data.slug || category.slug,
+    description: data.description || category.description,
+    isVisible: typeof data.isVisible === "boolean" ? data.isVisible : category.isVisible,
+    updatedBy: userId, // always set the new updater
+  };
 
-  // If new image is provided
-  if (imageFile) {
-    // ✅ Delete old image from Cloudinary if exists
+  if (data.image) {
     if (category.image?.public_id) {
       await deleteFile(category.image.public_id);
     }
-
-    
-    const uploadedImage = await uploadSingleFile(imageFile.path);
-    categoryData.image = uploadedImage;
+    categoryData.image = data.image;
   }
 
   const updatedCategory = await updateCategoryRepo(id, categoryData);
 
   return {
     statusCode: 200,
-    message: 'Category updated successfully',
+    message: "Category updated successfully",
     data: updatedCategory,
   };
 };
+
+
 
 module.exports = {
   createCategory,

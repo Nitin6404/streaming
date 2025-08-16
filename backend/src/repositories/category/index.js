@@ -37,6 +37,15 @@ exports.getCategoryByname = async name => {
 
 
 exports.updateCategory = async (id, data) => {
-  const category = await Category.findByIdAndUpdate(id, data, { new: true });
+  // Prevent overwriting createdBy
+  // if ("createdBy" in data) {
+  //   delete data.createdBy;
+  // }
+
+  const category = await Category.findByIdAndUpdate(
+    id,
+    { $set: data },
+    { new: true }
+  );
   return category;
 };

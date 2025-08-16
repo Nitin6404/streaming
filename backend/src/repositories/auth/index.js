@@ -30,4 +30,7 @@ exports.checkTeacherExists = async (teacherId) =>{
   return false;
 }
 
+exports.checkUserUsernameExists = async username =>{
+  return await User.findOne({username});
+}
 

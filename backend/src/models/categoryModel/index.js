@@ -10,8 +10,8 @@ const CategorySchema = new mongoose.Schema(
     },
     description: { type: String },
     isVisible: { type: Boolean, default: true },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
   },
   { timestamps: true }
 );

@@ -54,10 +54,14 @@ exports.handleGetSingleCategory = asyncHandler(async (req, res) => {
 // Update Category
 exports.handleUpdateCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const userId = req.body.updatedBy;  
   const image = req.file;
 
   if (!id) {
     return res.status(400).json(new ApiResponse(400, null, 'Category id is required'));
+  }
+  if (!userId) {
+    return res.status(400).json(new ApiResponse(400, null, 'User id (updatedBy) is required'));
   }
 
   let imageData = null;
@@ -69,13 +73,9 @@ exports.handleUpdateCategory = asyncHandler(async (req, res) => {
   const result = await updateCategory(
     id,
     { ...req.body, ...(imageData ? { image: imageData } : {}) },
-    req.body.updatedBy
+    userId
   );
 
-  if (!result) {
-    return res.status(404).json(new ApiResponse(404, null, 'Category not found'));
-  }
-
-  const { statusCode, data, message } = result;
-  return res.status(statusCode).json(new ApiResponse(statusCode, data, message));
+  return res.status(result.statusCode).json(new ApiResponse(result.statusCode, result.data, result.message));
 });
+

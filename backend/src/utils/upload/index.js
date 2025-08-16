@@ -20,3 +20,15 @@ exports.uploadSingleImage = async (filePath, folder = 'categories') => {
     throw new Error(`Image Upload Error: ${error.message}`);
   }
 };
+
+// Delete image from Cloudinary
+exports.deleteFile = async (publicId) => {
+  try {
+    if (!publicId) return null;
+
+    const result = await cloudinary_js_config.uploader.destroy(publicId);
+    return result;
+  } catch (error) {
+    throw new Error(`Image Delete Error: ${error.message}`);
+  }
+};
