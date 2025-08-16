@@ -1,27 +1,13 @@
 const multer = require('multer');
 const path = require('path');
 
-const allowedFileTypes = {
-  images: /jpeg|jpg|png|gif|webp/,
-  audio: /mp3|wav|ogg|mpeg/,
-  pdf: /pdf/,
-};
+// Allowed image types
+const allowedFileTypes = /jpeg|jpg|png|gif|webp/;
 
+// Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    let folder = '';
-
-    if (allowedFileTypes.images.test(file.mimetype)) {
-      folder = 'images';
-    } else if (allowedFileTypes.audio.test(file.mimetype)) {
-      folder = 'voice_notes';
-    } else if (allowedFileTypes.pdf.test(file.mimetype)) {
-      folder = 'pdfs';
-    } else {
-      return cb(new Error('Invalid file type.'));
-    }
-
-    const uploadPath = path.join(__dirname, '../uploads', folder);
+    const uploadPath = path.join(__dirname, '../uploads/images');
     cb(null, uploadPath);
   },
 
@@ -32,19 +18,22 @@ const storage = multer.diskStorage({
   },
 });
 
+// File filter (only images allowed)
 const fileFilter = (req, file, cb) => {
-  if (
-    allowedFileTypes.images.test(file.mimetype) ||
-    allowedFileTypes.audio.test(file.mimetype) ||
-    allowedFileTypes.pdf.test(file.mimetype)
-  ) {
+  if (allowedFileTypes.test(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Invalid file type. Only images, audio, and PDFs are allowed.'), false);
+    cb(new Error('Invalid file type. Only images are allowed.'), false);
   }
 };
 
-module.exports = {
+// Single image upload middleware
+const uploadSingleImage = multer({
   storage,
   fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit (optional)
+}).single('image');
+
+module.exports = {
+  uploadSingleImage,
 };

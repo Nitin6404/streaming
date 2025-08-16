@@ -7,7 +7,7 @@ const {
   updateCategory: updateCategoryRepo,
   getCategoryByname,
 } = require('../../repositories/category');
-const { uploadSingleFile } = require('../../utils/upload');
+const { uploadSingleFile, deleteFile } = require('../../utils/upload');
 
 /**
  * Create a category
@@ -44,7 +44,7 @@ const createCategory = async ({ name, slug, image, description, createdBy }) => 
   const newCategory = await createCategoryRepo({
     name,
     slug,
-    image,
+    image, 
     description,
     createdBy,
   });
@@ -133,22 +133,30 @@ const updateCategory = async (id, data, imageFile, userId) => {
     };
   }
 
-  const categoryData = { ...data, updatedBy: userId };
-
-  // If image is provided, upload it
-  if (imageFile) {
-    const imageUrl = await uploadSingleFile(imageFile.path);
-    categoryData.image = imageUrl;
-  }
-
-  const updatedCategory = await updateCategoryRepo(id, categoryData);
-  if (!updatedCategory) {
+  const category = await getCategoryById(id);
+  if (!category) {
     return {
       statusCode: 404,
       message: 'Category not found',
       data: null,
     };
   }
+
+  const categoryData = { ...data, updatedBy: userId };
+
+  // If new image is provided
+  if (imageFile) {
+    // ✅ Delete old image from Cloudinary if exists
+    if (category.image?.public_id) {
+      await deleteFile(category.image.public_id);
+    }
+
+    
+    const uploadedImage = await uploadSingleFile(imageFile.path);
+    categoryData.image = uploadedImage;
+  }
+
+  const updatedCategory = await updateCategoryRepo(id, categoryData);
 
   return {
     statusCode: 200,

@@ -30,14 +30,11 @@ exports.createCategory = async category => {
   return newCategory;
 };
 
-exports.getCategoryByname = async name =>{
-  const category = await Category.findOne({name:name});
-  if(category){
-    return false;
-  }else{
-    return true;
-  }
-}
+exports.getCategoryByname = async name => {
+  const category = await Category.findOne({ name });
+  return category; 
+};
+
 
 exports.updateCategory = async (id, data) => {
   const category = await Category.findByIdAndUpdate(id, data, { new: true });

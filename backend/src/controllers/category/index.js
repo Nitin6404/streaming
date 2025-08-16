@@ -6,29 +6,31 @@ const {
   getSingleCategory,
   updateCategory,
 } = require('../../services/category/index');
-const { uploadSingleFile } = require('../../utils/upload/index.js');
+const { uploadSingleImage } = require('../../utils/upload/index.js');
 
+// Create Category
 exports.handleCreateCategory = asyncHandler(async (req, res) => {
   const image = req.file; // single image
   if (!image) {
     return res.json(new ApiResponse(404, null, 'No Image Found', false));
   }
 
-  const imageUrl = await uploadSingleFile(image.path);
+  const { url, public_id } = await uploadSingleImage(image.path, 'categories');
   const { name, slug, description, createdBy } = req.body;
 
   const result = await createCategory({
     name,
     slug,
-    image: imageUrl,
+    image: { url, public_id }, // store both
     description,
-    createdBy, // coming from req.body now
+    createdBy,
   });
 
   const { statusCode, data, message } = result;
   return res.status(statusCode).json(new ApiResponse(statusCode, data, message));
 });
 
+// Get All Categories
 exports.handleGetAllCategories = asyncHandler(async (req, res) => {
   const { search, page = 1, limit = 25, start_date, end_date } = req.query;
   const result = await getCategories(search, page, limit, start_date, end_date);
@@ -37,6 +39,7 @@ exports.handleGetAllCategories = asyncHandler(async (req, res) => {
   return res.status(statusCode).json(new ApiResponse(statusCode, data, message));
 });
 
+// Get Single Category
 exports.handleGetSingleCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!id) {
@@ -48,19 +51,25 @@ exports.handleGetSingleCategory = asyncHandler(async (req, res) => {
   return res.status(statusCode).json(new ApiResponse(statusCode, data, message));
 });
 
+// Update Category
 exports.handleUpdateCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const image = req.file; // single image
+  const image = req.file;
 
   if (!id) {
     return res.status(400).json(new ApiResponse(400, null, 'Category id is required'));
   }
 
+  let imageData = null;
+  if (image) {
+    const { url, public_id } = await uploadSingleImage(image.path, 'categories');
+    imageData = { url, public_id };
+  }
+
   const result = await updateCategory(
     id,
-    req.body,
-    image,
-    req.body.updatedBy // taking from req.body instead of req.admin
+    { ...req.body, ...(imageData ? { image: imageData } : {}) },
+    req.body.updatedBy
   );
 
   if (!result) {

@@ -7,12 +7,10 @@ const {
 } = require('../../controllers/category/index.js');
 const { validateCreateCategory } = require('../../validators/category/index.js');
 const { validateRequest } = require('../../middleware/validateRequest/index');
-const multer = require('multer');
-const { storage } = require('../../config/multer.js');
+const { uploadSingleImage } = require('../../config/multer.js');
 // const { isAdmin } = require('../../middleware/auth/index.js');
-const router = express.Router();
 
-const upload = multer({ storage: storage });
+const router = express.Router();
 
 /**
  * @swagger
@@ -46,7 +44,7 @@ const upload = multer({ storage: storage });
 router.post(
   '/create-category',
   // isAdmin,
-  upload.single('image'),
+  uploadSingleImage,
   validateCreateCategory,
   validateRequest,
   handleCreateCategory
@@ -144,7 +142,7 @@ router.get('/get-category/:id', handleGetSingleCategory);
  */
 router.put(
   '/update-category/:id',
-  upload.single('image'),
+  uploadSingleImage,
   // isAdmin,
   validateRequest,
   handleUpdateCategory
