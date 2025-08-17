@@ -1,3 +1,4 @@
+//repositories/auth/index.js
 const { User } = require("../../models/userModel/index");
 
 exports.checkUserExists = async (phoneNumber) => {
@@ -22,6 +23,14 @@ exports.getAllUser = async () =>{
   return await User.find();
 }
 
+exports.deleteExistingUser = async (phoneNumber) =>{
+  return await User.findOneAndDelete({phoneNumber:phoneNumber});
+}
+
+exports.updateExistingUser = async (findphoneNumber,updatedData) =>{
+  return await User.findOneAndUpdate({phoneNumber:findphoneNumber},{$set:updatedData},{new:true});
+}
+
 exports.checkTeacherExists = async (teacherId) =>{
   const user = await User.findById(teacherId);
   if(user.role!=="student"){
@@ -33,4 +42,5 @@ exports.checkTeacherExists = async (teacherId) =>{
 exports.checkUserUsernameExists = async username =>{
   return await User.findOne({username});
 }
+
 

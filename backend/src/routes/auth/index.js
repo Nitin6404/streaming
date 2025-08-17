@@ -3,12 +3,16 @@ const {
   handleUserRegister,
   handleUserLogin,
   handleAllUserSearch,
-  handleSingleUserSearch
+  handleSingleUserSearch,
+  handleUserUpdation,
+  handleUserDeletion
 } = require("../../controllers/auth/index");
 
 const {
   validateMobileAndOTP,
-  validateUserSearch
+  validateUserSearch,
+  validateUserUpdation,
+  validateUserDeletion
 } = require("../../validators/auth/index");
 
 const {
@@ -115,5 +119,71 @@ router
  */
 
 router.route("/search").get(validateUserSearch,validateRequest,handleAllUserSearch);
+
+
+/**
+ * @swagger
+ * /api/user/update:
+ *   put:
+ *     summary: Update user details (username or phone number)
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phoneNumber:
+ *                 type: string
+ *                 example: "1234567890"
+ *               updatedData:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                     example: "New Name"
+ *                   phoneNumber:
+ *                     type: string
+ *                     example: "9876543210"
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       404:
+ *         description: User not found
+ */
+router
+  .route("/update")
+  .put(validateUserUpdation, validateRequest, handleUserUpdation);
+
+/**
+ * @swagger
+ * /api/user/delete:
+ *   delete:
+ *     summary: Delete a user by phone number
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phoneNumber:
+ *                 type: string
+ *                 example: "1234567890"
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ */
+router
+  .route("/delete")
+  .delete(validateUserDeletion, validateRequest, handleUserDeletion);
+
+module.exports = router;
+
+
 
 module.exports = router;

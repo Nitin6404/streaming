@@ -1,4 +1,5 @@
-const { checkUserExists, createUser, checkUserUsernameExists, getAllUser } = require('../../repositories/auth');
+//services/auth/index.js
+const { checkUserExists, createUser, checkUserUsernameExists, getAllUser, deleteExistingUser, updateExistingUser } = require('../../repositories/auth');
 const { OTP } = require('../../constants/otp/index');
 const jwt = require('jsonwebtoken');
 
@@ -132,6 +133,67 @@ exports.getUsers = async(phoneNumber) =>{
       message:"All Users searched",
       statusCode:200
     }
+  }
+
+
+}
+
+
+exports.deleteUser = async phoneNumber =>{
+  if(!phoneNumber){
+    return {
+      data:null,
+      message:"Required fields are missing!",
+      statusCode:400
+    }
+  }
+
+  const user = await deleteExistingUser(phoneNumber);
+
+  if(!user){
+    return {
+      data:null,
+      message:"User doesnt Exist",
+      statusCode:404
+    }
+  }
+
+  return {
+    data:user,
+    message:"User deleted!",
+    statusCode:200
+  }
+}
+
+exports.updateUser = async (phoneNumber,updatedData)=>{
+  if(!phoneNumber||!updatedData){
+    return {
+      data:null,
+      message:"Required fields are missing",
+      statusCode:400
+    }
+  }
+
+  let allowUpdates = {};
+
+  if(updatedData.username) allowUpdates.username= updatedData.username;
+  if(updatedData.phoneNumber) allowUpdates.phoneNumber = updatedData.phoneNumber
+
+// i removed the role stuff coz once a account is made it will have the same role 
+  const user = await updateExistingUser(phoneNumber,allowUpdates);
+
+  if(!user){
+    return {
+      statusCode: 404,
+      message: 'Users not found',
+      data: null,
+    }
+  }
+
+  return {
+    data:null,
+    message:"User updated!",
+    statusCode:200
   }
 
 

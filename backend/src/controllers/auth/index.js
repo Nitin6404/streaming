@@ -1,5 +1,6 @@
+//controllers/auth/index.js
 const { checkUserExists } = require('../../repositories/auth');
-const { registerUser, loginUser, getUsers, getUser } = require('../../services/auth/index');
+const { registerUser, loginUser, getUsers, getUser, updateUser, deleteUser } = require('../../services/auth/index');
 const ApiResponse = require('../../utils/apiResponse');
 const { asyncHandler } = require('../../utils/asyncHandler/index');
 
@@ -29,6 +30,26 @@ exports.handleAllUserSearch = asyncHandler(async(req,res)=>{
 
     const result = await getUsers(phoneNumber);
 
+    const {message,data,statusCode} = result;
+
+    return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
+  })
+
+  exports.handleUserUpdation = asyncHandler(async(req,res)=>{
+    const {updatedData,phoneNumber} = req.body;
+
+    const result = await updateUser(phoneNumber,updatedData);
+
+    const {message,data,statusCode} = result;
+
+    return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
+  })
+
+  exports.handleUserDeletion = asyncHandler(async(req,res)=>{
+    const {phoneNumber} = req.body;
+
+    const result = await deleteUser(phoneNumber);
+    
     const {message,data,statusCode} = result;
 
     return res.status(statusCode).json(new ApiResponse(statusCode,data,message));
